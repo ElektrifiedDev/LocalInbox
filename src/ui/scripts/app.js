@@ -24,8 +24,8 @@ function closeModal() {
 async function handleAddAccount() {
     const name = document.getElementById('display-name').value;
     const email = document.getElementById('email-input').value;
-    pass = document.getElementById('pass-input').value;
-    const pass = pass.replaceAll(" ", "");
+    let pass = document.getElementById('pass-input').value;
+    pass = String(pass ?? "").replace(/ /g, "");
     const host = document.getElementById('host-input').value;
 
     const result = await pywebview.api.save_credentials(name, email, pass, host);
@@ -76,6 +76,7 @@ async function fetchEmailsForProfile(uid) {
 async function renderEmails(emails) {
     const emailListContainer = document.getElementById('email-list');
     emailListContainer.innerHTML = ''; // Clear existing emails
+    console.log(emails);
     emails.forEach(email => {
         const emailItem = document.createElement('div');
         emailItem.className = 'email-item';
