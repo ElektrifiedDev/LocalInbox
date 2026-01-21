@@ -1,7 +1,7 @@
 from imap_tools import MailBox, AND
 from database import db_handler
-
-def sync_emails(host, user, password, db_path):
+from main import LOCAL_EMAIL_DB_PATH
+def sync_emails(host, user, password, db_path=LOCAL_EMAIL_DB_PATH):
     try:
         with MailBox(host).login(user, password) as mailbox:
             for msg in mailbox.fetch(limit=20, reverse=True):

@@ -1,43 +1,14 @@
 // This runs as soon as the window loads
-window.onload = function() {
-    loadProfiles();
-};
-
-// 1. Fetch profiles from Python and show them in the sidebar
-async function loadProfiles() {
-    const profiles = await pywebview.api.load_credentials();
-    const sidebar = document.getElementById('sidebar');
-    const addButton = document.querySelector('.add-profile-btn');
-
-    // Remove existing profile icons (but keep the + button)
-    const existingIcons = document.querySelectorAll('.profile-icon');
-    existingIcons.forEach(icon => icon.remove());
-
-    if (profiles && profiles.length > 0) {
-        profiles.forEach(profile => {
-            const icon = document.createElement('div');
-            icon.className = 'profile-icon';
-            // Use the first two letters of the name as the icon text
-            icon.innerText = profile.display_name.substring(0, 2).toUpperCase();
-            icon.title = profile.display_name;
-            
-            // When clicked, it should tell Python to switch accounts
-            icon.onclick = () => selectProfile(profile.uid, profile.display_name);
-            
-            // Add it to the sidebar before the + button
-            sidebar.insertBefore(icon, addButton);
-        });
-    }
-}
+window.addEventListener('pywebviewready', function() {
+    refreshSidebar();
+});
 
 // 2. Handle what happens when a profile is clicked
 async function selectProfile(uid, name) {
     document.getElementById('view-title').innerText = name;
     document.getElementById('email-list').innerText = "Loading emails...";
-    
-    // Later, you'll call a Python function here like:
-    // const emails = await pywebview.api.get_emails_for_profile(uid);
-    // renderEmails(emails);
+    const emails = await fetchEmailsForProfile(uid);
+    renderEmails(emails);
 }
 
 // 3. Placeholder for the modal you'll build later
@@ -60,8 +31,59 @@ async function handleAddAccount() {
     
     if (result.status === "success") {
         closeModal();
-        loadProfiles(); // Refresh the profile list
+        refreshSidebar(); // Refresh the profile list
     } else {
         alert("Failed to add profile: " + result.message);
     }
+}
+
+async function refreshSidebar() {
+    const sidebarContainer = document.getElementById('sidebar-profiles'); // Make sure you have this ID in your HTML
+    
+    // 1. Call your exposed Python function
+    const profiles = await pywebview.api.load_credentials();
+    
+    // 2. Clear the current list (to avoid duplicates)
+    sidebarContainer.innerHTML = '';
+    
+    // 3. Loop through the profiles and create the "Premium" buttons
+    profiles.forEach(profile => {
+        const profileWrapper = document.createElement('div');
+        profileWrapper.className = 'sidebar-button'; 
+        
+        const initial = profile.name ? profile.name[0].toUpperCase() : profile.email[0].toUpperCase();
+        
+        // We put the icon AND the name inside the wrapper
+        profileWrapper.innerHTML = `
+            <div class="profile-icon">${initial}</div>
+        `;
+        
+        profileWrapper.onclick = () => selectProfile(profile.id, profile.name);
+        sidebarContainer.appendChild(profileWrapper);
+    });
+}
+
+async function fetchEmailsForProfile(uid) {
+    const email_address = await pywebview.api.get_email_address(uid);
+    const password = await pywebview.api.get_email_password(uid);
+    const imap_host = await pywebview.api.get_email_host(uid);
+
+    const emails = await pywebview.api.sync_emails(imap_host, email_address, password);
+    return emails;
+}
+
+async function renderEmails(emails) {
+    const emailListContainer = document.getElementById('email-list');
+    emailListContainer.innerHTML = ''; // Clear existing emails
+    emails.forEach(email => {
+        const emailItem = document.createElement('div');
+        emailItem.className = 'email-item';
+        emailItem.innerHTML = `
+            <div class="email-subject">${email.subject}</div>
+            <div class="email-sender">From: ${email.from}</div>
+            <div class="email-date">Date: ${email.date}</div>
+            <div class="email-snippet">${email.snippet}</div>
+        `;
+        emailListContainer.appendChild(emailItem);
+    });
 }

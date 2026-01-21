@@ -38,6 +38,15 @@ body {
     gap: 15px;
 }
 
+#sidebar-profiles {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
 .profile-icon, .profile-add-button {
     /* Using Viewport Width for both means they are ALWAYS equal */
     width: 6vw; 
@@ -60,6 +69,17 @@ body {
 .profile-icon {
     background-color: var(--card-bg);
     border: 1px solid #333;
+}
+
+.profile-name {
+    margin-top: 5px;
+    font-size: 0.9vw;
+    color: var(--text-color);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%;
 }
 
 .profile-add-button {

@@ -37,19 +37,23 @@ def init_credentials():
     # If the file doesn't exist, create it with an empty dictionary
     if not os.path.exists(CREDS_PATH):
         with open(CREDS_PATH, 'w') as f:
-            json.dump({}, f)
+            json.dump([], f)
         print("Initialized empty credentials file.")
 
 def save_credentials(name, email_address, password, host):
     try:
-        data = {
-        "name": name,
-        "email": email_address,
-        "password": password, # In the future, encrypt this!
-        "host": host
+        data = load_credentials()
+        new_profile = {
+            "id": len(data) + 1, # Add this so JS can track which profile is which
+            "name": name,
+            "email": email_address,
+            "password": password, 
+            "host": host
         }
+        data.append(new_profile) # Append to the list we just loaded
+        
         with open(CREDS_PATH, 'w') as f:
-            json.dump(data, f)
+            json.dump(data, f, indent=4) # indent makes the file readable for you!
 
         return {"status": "success", "message": "Credentials saved."}
     except Exception as e:
@@ -57,31 +61,42 @@ def save_credentials(name, email_address, password, host):
 
 def load_credentials():
     if not os.path.exists(CREDS_PATH):
-        return None
-    with open(CREDS_PATH, 'r') as f:
-        data = json.load(f)
-    return data
+        return []   
+    try:
+        with open(CREDS_PATH, 'r') as f:
+            data = json.load(f)
+            print("Loaded credentials:", data)  
+            return data if isinstance(data, list) else []
+    except (json.JSONDecodeError, IOError):
+        return []
 
 db_handler.init_db(LOCAL_EMAIL_DB_PATH)
 
-def test_db_write():
-    # Call your db_handler to insert a fake email
-    db_handler.insert_email(
-        LOCAL_EMAIL_DB_PATH, 
-        "test-123", 
-        "system@local", 
-        "Hello World", 
-        "It works!", 
-        "2026-01-21", 
-        0
-    )
-    return print("Successfully wrote to SQLite in AppData!")
+def get_email_address(uid):
+    profiles = load_credentials()
+    for profile in profiles:
+        if profile["id"] == uid:
+            return profile["email"]
+    return None
+
+def get_email_password(uid):
+    profiles = load_credentials()
+    for profile in profiles:
+        if profile["id"] == uid:
+            return profile["password"]
+    return None
+
+def get_email_host(uid):
+    profiles = load_credentials()
+    for profile in profiles:
+        if profile["id"] == uid:
+            return profile["host"]
+    return None
 
 def start_gui():
     window = pywebview.create_window('LocalInbox', UI_PATH, width=1200, height=800)
 
-    window.expose(save_credentials, load_credentials, imap_logic.sync_emails, test_db_write)
-
+    window.expose(save_credentials, load_credentials, imap_logic.sync_emails, get_email_address, get_email_password, get_email_host)
     pywebview.start(gui='qt')
 
 if __name__ == '__main__':
