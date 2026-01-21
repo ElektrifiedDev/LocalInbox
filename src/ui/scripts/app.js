@@ -24,7 +24,8 @@ function closeModal() {
 async function handleAddAccount() {
     const name = document.getElementById('display-name').value;
     const email = document.getElementById('email-input').value;
-    const pass = document.getElementById('pass-input').value;
+    pass = document.getElementById('pass-input').value;
+    const pass = pass.replaceAll(" ", "");
     const host = document.getElementById('host-input').value;
 
     const result = await pywebview.api.save_credentials(name, email, pass, host);
