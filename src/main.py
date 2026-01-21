@@ -40,14 +40,20 @@ def init_credentials():
             json.dump({}, f)
         print("Initialized empty credentials file.")
 
-def save_credentials(email_address, password, host):
-    data = {
+def save_credentials(name, email_address, password, host):
+    try:
+        data = {
+        "name": name,
         "email": email_address,
         "password": password, # In the future, encrypt this!
         "host": host
-    }
-    with open(CREDS_PATH, 'w') as f:
-        json.dump(data, f)
+        }
+        with open(CREDS_PATH, 'w') as f:
+            json.dump(data, f)
+
+        return {"status": "success", "message": "Credentials saved."}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 def load_credentials():
     if not os.path.exists(CREDS_PATH):

@@ -60,8 +60,8 @@ async function handleAddAccount() {
     
     if (result.status === "success") {
         closeModal();
-        loadProfiles(); // Refresh the sidebar
+        loadProfiles(); // Refresh the profile list
     } else {
-        alert("Error: " + result.message);
+        alert("Failed to add profile: " + result.message);
     }
 }
