@@ -4,17 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Inbox</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
     <div class="app-container">
         <div class="sidebar" id="sidebar">
-            <button class="add-profile-btn" onclick="showAddProfileModal()">+</button>
+            <button class="profile-add-button" onclick="showAddProfileModal()">+</button>
         </div>
         <main class="main-content">
             <h1 id="view-title">Welcome</h1>
-            <div id="email-list">
+            <div id="email-list"></div> 
         </main>
+        </div>
+    <script src="./scripts/app.js"></script>
+
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Add New Profile</h3>
+            <input type="text" id="display-name" placeholder="Profile Name (e.g. Work)">
+            <input type="email" id="email-input" placeholder="Email Address">
+            <input type="password" id="pass-input" placeholder="App Password">
+            <input type="text" id="host-input" placeholder="IMAP Host (imap.gmail.com)">
+            
+            <div class="modal-actions">
+                <button class="btn-cancel modal-button" onclick="closeModal()">Cancel</button>
+                <button class="btn-save modal-button" onclick="handleAddAccount()">Save Profile</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

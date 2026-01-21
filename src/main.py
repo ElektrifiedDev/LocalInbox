@@ -15,6 +15,8 @@ from datetime import datetime
 from database import db_handler
 from core import imap_logic, mail_manager
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 APP_DATA_PATH = os.path.join(os.environ['APPDATA'], 'LocalInbox')
 if not os.path.exists(APP_DATA_PATH):
     os.makedirs(APP_DATA_PATH)
@@ -26,7 +28,7 @@ if not os.path.exists(DATA_DIR):
 LOCAL_EMAIL_DB_PATH = os.path.join(DATA_DIR, 'local_emails.db')
 CREDS_PATH = os.path.join(DATA_DIR, 'credentials.json')
 
-UI_PATH = os.path.join(os.path.dirname(__file__), 'ui', 'index.html')
+UI_PATH = os.path.join(current_dir, 'ui', 'index.html')
 
 def init_credentials():
     # If the file doesn't exist, create it with an empty dictionary

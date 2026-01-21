@@ -1,0 +1,168 @@
+/* --- 1. Variables (Updated from your Website) --- */
+:root {
+    --primary-color: #444;
+    --bg-color: #050505;
+    --card-bg: #151515;    /* From your .container */
+    --text-color: #f4f7f6;
+    --sidebar-bg: #0a0a0a;
+}
+
+/* --- 2. Base & Layout --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    height: 100vh;
+    overflow: hidden; /* App shouldn't scroll, only the content inside */
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- 3. Sidebar (Using your Nav-style pill icons) --- */
+/* --- 3. Sidebar (Fluid Scaling) --- */
+.sidebar {
+    width: 10vw; /* Scales with screen width */
+    min-width: 60px; /* Prevents it from disappearing on tiny windows */
+    max-width: 200px; /* Prevents it from getting monstrous on 4K */
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    gap: 15px;
+}
+
+.profile-icon, .profile-add-button {
+    /* Using Viewport Width for both means they are ALWAYS equal */
+    width: 6vw; 
+    height: 6vw;
+    
+    /* Responsive limits to match the sidebar */
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 140px;
+    max-height: 140px;
+
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-icon {
+    background-color: var(--card-bg);
+    border: 1px solid #333;
+}
+
+.profile-add-button {
+    margin-top: 20px;
+    background-color: transparent;
+    border: 1px dashed #444; 
+    color: var(--text-color);
+    font-size: 1.5vw; /* Text scales too! */
+    font-weight: 300;
+}
+
+.profile-icon:hover {
+    border: 1px solid var(--primary-color);
+    transform: scale(1.1);
+}
+
+.profile-add-button:hover {
+    background-color: #151515;
+    border: 1px solid var(--text-color);
+    transform: scale(1.1);
+}
+
+/* --- 4. Main Content --- */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* --- 5. Modal (The "Premium" Website Look) --- */
+.modal-overlay {
+    display: none; /* Toggle to flex */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--card-bg); /* Match your website's .container */
+    padding: 40px;
+    border-radius: 12px;
+    width: 450px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid #222;
+}
+
+/* --- 6. Form Elements (Straight from your website) --- */
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    background: #050505;
+    border: 1px solid #333;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Using your .project-button style */
+.btn-save {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #888;
+    border: none;
+    cursor: pointer;
+}
