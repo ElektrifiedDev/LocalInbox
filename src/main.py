@@ -9,8 +9,10 @@ import datetime
 import sqlite3
 import webview as pywebview
 import cryptography
+import PyQt5
 
 from datetime import datetime
+from PyQt5 import QtWidgets, QtCore, QtGui, QtWebEngineWidgets
 
 from database import db_handler
 from core import imap_logic, mail_manager
