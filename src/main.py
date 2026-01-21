@@ -10,6 +10,7 @@ import sqlite3
 import webview as pywebview
 import cryptography
 import PyQt5
+import qtpy
 
 from datetime import datetime
 from PyQt5 import QtWidgets, QtCore, QtGui, QtWebEngineWidgets
