@@ -1,0 +1,15 @@
+bottle==0.13.4
+cffi==2.0.0
+clr_loader==0.2.10
+cryptography==46.0.3
+imap-tools==1.11.1
+proxy_tools==0.1.0
+pycparser==2.23
+PyQt5==5.15.11
+PyQt5-Qt5==5.15.2
+PyQt5_sip==12.18.0
+PyQtWebEngine==5.15.7
+PyQtWebEngine-Qt5==5.15.2
+pythonnet==3.0.0rc6
+pywebview==6.1
+typing_extensions==4.15.0
