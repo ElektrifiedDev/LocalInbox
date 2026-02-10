@@ -29,13 +29,5 @@ Thumbs.db
 .env
 
 # --- Project Specific ---
-.localinbox_test/
 .localinbox_build/
 .releases/
-
-# --- Sensitive Information ---
-credentials.json
-*token.json
-storage/tokens/
-storage/*.db
-storage/*.sqlite
